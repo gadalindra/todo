@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task List</title>
+{% endblock %}
+
+{% block body %}
+<form action="{% url 'search-task' %}" method="GET">
+    <input name="search">
+    <button type="submit">Search</button>
+</form>
+<div class="content">
+    <h1 style="text-align: center">Task List</h1>
+    {% if tasks|length < 1 %}
+    <h4 style="text-align: center">There are no tasks. Create one below!</h4>
+    {% else %}
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        <hr>
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.content }}</td>
+                <td>{{ task.date_created }}</td>
+                <td>
+                    <a href="{% url 'detail-task' task.pk %}" class="btn-sm btn-info">Detail</a>
+                    <a href="{% url 'update-task' task.pk %}" class="btn-sm btn-primary">Update</a>
+                    <a href="{% url 'delete-task' task.pk %}" class="btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a class="btn-sm btn-outline-info mb-4" href="?page=1">First</a>
+                <a class="btn-sm btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a class="btn-sm btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a class="btn-sm btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a class="btn-sm btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a class="btn-sm btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+            {% endif %}
+            <hr>
+        {% endif %}
+    </table>
+    {% endif %}
+    <hr>
+    <br>
+<div class="container">
+        <form action="/" class="" method="POST">
+            <div class="row">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" class="" value="Add Task">
+            </div>
+        </form>
+</div>
+</div>
+{% endblock %}

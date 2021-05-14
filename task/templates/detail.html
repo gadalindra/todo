@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Task Master</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>{{task.content}}</h1>
+    <h2>{{task.date_created}}</h2>
+    <a href="{% url 'delete-task' task.pk %}">Delete</a>
+    <br>
+    <a href="{% url 'update-task' task.pk %}">Update</a>
+    
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Delete Task</title>
+{% endblock %}
+
+{% block body %}
+<p>Are you sure you wanna delete "{{task.content}}" task?</p>
+
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <button class="btn btn-outline-success"><a href="{% url 'task-list' %}">No</a></button>
+    <input class="btn btn-danger" type="submit" name="Confirm" id="">
+</form>
+{% endblock %}
+
+

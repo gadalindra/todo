@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Search Results</title>
+{% endblock %}
+
+{% block body %}
+{% if tasks %}
+<h1>Search found</h1>
+{% for task in tasks %}
+<div class="card-header">
+    <h1>{{task.content}}</h1>
+    <h2><small>{{task.date_created}}</small></h2>
+    <a href="{% url 'detail-task' task.pk %}" class="btn-sm btn-info">Detail</a>
+    <a href="{% url 'update-task' task.pk %}" class="btn-sm btn-primary">Update</a>
+    <a href="{% url 'delete-task' task.pk %}" class="btn-sm btn-danger">Delete</a>
+</div>
+{% endfor %}
+{% else %}
+<h1>Search not found.</h1>
+{% endif %}
+{% endblock %}
